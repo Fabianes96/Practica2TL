@@ -5,6 +5,8 @@
  */
 package practica2tl;
 
+import java.util.ArrayList;
+
 
 /**
  *
@@ -169,21 +171,48 @@ public class listaG {
             }
         }           
         return cont==0;
-
     }
-//    
-//    public String[][] anulables()
+    
+    public ArrayList anulables()
+    {
+        ArrayList <String> v = new ArrayList<>();
+        nodoLg reco = primer;
+        reco = reco.getLigaD();
+        while(reco!= null)
+        {
+            if(esAnulable(reco))
+            {
+                v.add(reco.getDato());
+            }
+            reco = reco.getLigaD();
+        }
+        return v;
+    }
+//    public ArrayList primeros(nodoLg lg)
 //    {
-//        String [][]retorno ;
-//        nodoLg reco = primer;
-//        reco = reco.getLigaD();
-//        nodoLg hijo = reco.getLigaH();  
-//        nodoLg aux = hijo;
-//        while(reco!= null)
+//        ArrayList<String> primeros= new ArrayList<>();
+//        nodoLg p = lg.getLigaH();
+//        nodoLg reco = lg;
+//        p = p.getLigaD();
+//        //falta hijo de p
+//        if(p.getDato()== "/")
 //        {
-//            hijo = hijo.getLigaD();
-//            reco = reco.getLigaD();
+//            primeros.add("");
+//            return primeros;
 //        }
+//        if(p.getTipo()=='T')
+//        {
+//            primeros.add(p.getDato());
+//            return primeros;
+//        }
+//        else{
+//            if(p.getDato()==lg.getDato())
+//            {
+//                                
+//            }
+//            
+//        }
+//        
 //    }
     
 

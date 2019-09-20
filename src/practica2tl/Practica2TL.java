@@ -21,6 +21,37 @@ public class Practica2TL {
      */
     public static void main(String[] args) {
 //         TODO code application logic here
+//        view v = new view();
+//        v.show();
+        
+        String s= "<B>=<T>\n<S>=fv\n<T>=/\n<S>=s";
+       
+        controlador c = new controlador();
+        listaG g;
+        g = c.convertirALg(s);
+        String aux="";
+//        nodoLg l = g.getRaiz();
+//        
+//        l=l.getLigaD();
+//        nodoLg a=l.getLigaH();
+//        aux = l.getDato();
+//        l= a;
+//        while(a!=null)
+//        {
+//            if(l==null)
+//            {
+//               a=a.getLigaH();
+//               if(a!=null)l=a;
+//            }            
+//            if(l!=null){aux=aux+l.getDato();
+//            l=l.getLigaD();}
+//        }
+//        
+//        System.out.println(aux);
+        nodoLg prueba = g.getPrimer().getLigaD();
+        boolean loquesea = g.esAnulable(prueba);        
+        System.out.println(loquesea);
+        System.out.println(g.anulables());
       
     }
     
