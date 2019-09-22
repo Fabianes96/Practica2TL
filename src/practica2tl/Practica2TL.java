@@ -26,10 +26,10 @@ public class Practica2TL {
 //        v.show();
         
         String s= "<A>=a<B><C>\n<A>=<D>b<A>\n<B>=/\n<B>=b<A><B>\n<C>=c<C>\n<C>=<D>d<B>\n<D>=/\n<D>=e<E>\n<E>=<B><D>\n<E>=f";
-       
+        String ss= "<S>=<S>b\n<S>=c<A>\n<S>=/\n<A>=a<A>\n<A>=a";
         controlador c = new controlador();
         listaG g;
-        g = c.convertirALg(s);
+        g = c.convertirALg(ss);
         String aux="";
 //        nodoLg l = g.getRaiz();
 //        

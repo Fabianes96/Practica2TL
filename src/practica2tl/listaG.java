@@ -215,7 +215,10 @@ public class listaG {
                 }
                 if(esAnulable(aux)){
                     
-                    prim.addAll(primeros(aux));
+                    if(!aux.getDato().equals(lg.getDato()))
+                    {
+                        prim.addAll(primeros(aux));
+                    }                    
                     if(p.getLigaD()!=null)
                     {
                         if(p.getLigaD().getTipo()=='N')
@@ -231,11 +234,17 @@ public class listaG {
                         {
                             prim.add(p.getLigaD().getDato());
                         }                        
-                    }
-                    
+                    }                    
                 }
                 else{
-                    prim.addAll(primeros(aux));
+                    if(!aux.getDato().equals(lg.getDato()))
+                    {
+                        prim.addAll(primeros(aux));
+                    }
+                    else
+                    {
+                        prim.add("");
+                    }
                 }                
             }
             recoH=recoH.getLigaH();
