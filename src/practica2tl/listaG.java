@@ -188,32 +188,62 @@ public class listaG {
         }
         return v;
     }
-//    public ArrayList primeros(nodoLg lg)
-//    {
-//        ArrayList<String> primeros= new ArrayList<>();
-//        nodoLg p = lg.getLigaH();
-//        nodoLg reco = lg;
-//        p = p.getLigaD();
-//        //falta hijo de p
-//        if(p.getDato()== "/")
-//        {
-//            primeros.add("");
-//            return primeros;
-//        }
-//        if(p.getTipo()=='T')
-//        {
-//            primeros.add(p.getDato());
-//            return primeros;
-//        }
-//        else{
-//            if(p.getDato()==lg.getDato())
-//            {
-//                                
-//            }
-//            
-//        }
-//        
-//    }
+    public ArrayList primeros(nodoLg lg)
+    {
+        ArrayList<String> prim= new ArrayList<>();
+        nodoLg p = lg.getLigaH();
+        nodoLg recoH = p;
+        nodoLg aux = raiz.getLigaD();
+        
+        while(recoH!=null)
+        {
+            p = p.getLigaD();
+            if(p.getTipo()=='T')
+            {
+                if(p.getDato().equals("/")){
+                    prim.add("");
+                }
+                else{
+                    prim.add(p.getDato());
+                }
+            }
+            else
+            {
+                while(!aux.getDato().equals(p.getDato()))
+                {
+                    aux=aux.getLigaD();
+                }
+                if(esAnulable(aux)){
+                    
+                    prim.addAll(primeros(aux));
+                    if(p.getLigaD()!=null)
+                    {
+                        if(p.getLigaD().getTipo()=='N')
+                        {
+                            nodoLg a= raiz;
+                            while(!a.getDato().equals(p.getLigaD().getDato()))
+                            {
+                                a=a.getLigaD();
+                            }
+                            prim.addAll(primeros(a));
+                        }
+                        else
+                        {
+                            prim.add(p.getLigaD().getDato());
+                        }                        
+                    }
+                    
+                }
+                else{
+                    prim.addAll(primeros(aux));
+                }                
+            }
+            recoH=recoH.getLigaH();
+            p=recoH;           
+        }        
+        return prim;
+    }
+    
     
 
     public nodoLg getRaiz() {

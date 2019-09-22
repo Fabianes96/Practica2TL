@@ -5,6 +5,7 @@
  */
 package practica2tl;
 
+import java.util.ArrayList;
 import practica2tl.view.view;
 import practica2tl.controller.controlador;
 
@@ -24,7 +25,7 @@ public class Practica2TL {
 //        view v = new view();
 //        v.show();
         
-        String s= "<B>=<T>\n<S>=fv\n<T>=/\n<S>=s";
+        String s= "<A>=a<B><C>\n<A>=<D>b<A>\n<B>=/\n<B>=b<A><B>\n<C>=c<C>\n<C>=<D>d<B>\n<D>=/\n<D>=e<E>\n<E>=<B><D>\n<E>=f";
        
         controlador c = new controlador();
         listaG g;
@@ -49,10 +50,12 @@ public class Practica2TL {
 //        
 //        System.out.println(aux);
         nodoLg prueba = g.getPrimer().getLigaD();
-        boolean loquesea = g.esAnulable(prueba);        
-        System.out.println(loquesea);
-        System.out.println(g.anulables());
-      
+        
+        
+        System.out.println(prueba.getDato());  
+        System.out.println(g.primeros(prueba));
+        
+        
     }
     
 }
