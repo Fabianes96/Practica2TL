@@ -29,7 +29,7 @@ public class Practica2TL {
         String ss= "<S>=<S>b\n<S>=c<A>\n<S>=/\n<A>=a<A>\n<A>=a";
         controlador c = new controlador();
         listaG g;
-        g = c.convertirALg(ss);
+        g = c.convertirALg(s);
         String aux="";
 //        nodoLg l = g.getRaiz();
 //        
@@ -49,11 +49,11 @@ public class Practica2TL {
 //        }
 //        
 //        System.out.println(aux);
-        nodoLg prueba = g.getPrimer().getLigaD();
+        nodoLg prueba = g.getPrimer().getLigaD().getLigaD();
         
         
         System.out.println(prueba.getDato());  
-        System.out.println(g.primeros(prueba));
+        System.out.println(g.siguientes(prueba));
         
         
     }
