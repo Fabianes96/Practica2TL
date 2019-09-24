@@ -49,13 +49,13 @@ public class Practica2TL {
 //        }
 //        
 //        System.out.println(aux);
-        nodoLg prueba = g.getPrimer().getLigaD().getLigaD();
+        nodoLg prueba = g.getPrimer().getLigaD();
+          System.out.println(g.getTamano());
         
-        
-        System.out.println(prueba.getDato());  
-        System.out.println(g.siguientes(prueba));
-        
-        
+        System.out.println(g.getSeleccion());
+        System.out.println(g.getSeleccion().get(2));  
+//        System.out.println(prueba.getProduccion());
+        //System.out.println(g.siguientes(prueba));    
     }
     
 }

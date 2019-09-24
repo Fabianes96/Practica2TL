@@ -27,11 +27,13 @@ public class controlador {
         char rec,token;        
         boolean ladoiz, finDeLinea;
         String prod[]= s.split("\n");     
+        int cont = 0;
         for (String prod1 : prod) {            
             dato = "";
             finDeLinea = false;
             ladoiz= true;
             prod1 =prod1.replace(" ", "");
+            cont++;
             char[] aux = prod1.toCharArray();
             for (int i = 0; i < aux.length; i++) {
                 rec= aux[i];
@@ -48,9 +50,10 @@ public class controlador {
                             finDeLinea=true;
                         }
                         if(ladoiz){
-                            lg.insertarNodo(dato, 'N', false, false);                            
+                            
+                            lg.insertarNodo(dato, 'N', false, false,cont);                            
                         }else{
-                            lg.insertarNodo(dato, 'N', finDeLinea, true);                            
+                            lg.insertarNodo(dato, 'N', finDeLinea, true,cont);                            
                         }                        
                         
                         dato="";
@@ -60,18 +63,19 @@ public class controlador {
                         break;
                     case '/':
                         finDeLinea=true;
-                        lg.insertarNodo(Character.toString(rec),'T' , finDeLinea, true);
+                        lg.insertarNodo(Character.toString(rec),'T' , finDeLinea, true,cont);
                         i++;
                         break;                    
                     default:
                         if(i+1 == aux.length){
                             finDeLinea=true;                            
                         }
-                        lg.insertarNodo(Character.toString(rec), 'T', finDeLinea, true);                         
+                        lg.insertarNodo(Character.toString(rec), 'T', finDeLinea, true,cont);                         
                         break;
                 }
             }            
-        }  
+        }
+        lg.setTamano(cont);
         return lg;
     }
     
@@ -267,5 +271,6 @@ public class controlador {
             return tieneNulo;
         }
     }
+    
     
 }

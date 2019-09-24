@@ -20,6 +20,8 @@ public class listaG {
     private nodoLg posAux;
     private nodoLg primer;
     private nodoLg ultimo;
+    private ArrayList seleccion;
+    private int tamano;
 
     public listaG() {
         nodoLg x = new nodoLg("*");
@@ -36,13 +38,14 @@ public class listaG {
         return p == null;
     }
 
-    public void conectarNodo(String dato, char tipo, boolean fin) {                          //Conecta un nuevo nodo hacia la derecha
+    public void conectarNodo(String dato, char tipo, boolean fin, int prod) {                          //Conecta un nuevo nodo hacia la derecha
         nodoLg dat = new nodoLg(dato);
         dat.setTipo(tipo);
         dat.setFinDeLinea(fin);
         posicion.setLigaD(dat);
         dat.setLigaI(posicion);
         posicion = dat;
+        dat.setProduccion(prod);
     }
 
     public boolean encontrarDato(String d) {                                                 //Recorre la línea principal desde la raíz para buscar un NT
@@ -66,21 +69,21 @@ public class listaG {
 
     }
 
-    public void insertarNodo(String dato, char tipo, boolean finDeLinea, boolean padre) {    //Hace las validaciones para insertar T y NT a la lista
+    public void insertarNodo(String dato, char tipo, boolean finDeLinea, boolean padre, int prod) {    //Hace las validaciones para insertar T y NT a la lista
         if (padre == false) {                                                                   //Si no tiene padre entonces se encuentra en la parte izquierda de la producción
             if (encontrarDato(dato)) {                                                        //Si encuentra que el NT ya existe, entonces actualiza posicion para agregar ahí
                 posicion = posicion.getLigaH();
             } else {                                                                           //Si no existe el NT, entonces lo agrega y le añade un nodo cabeza para empezar a agregar ahí
-                conectarNodo(dato, tipo, finDeLinea);
+                conectarNodo(dato, tipo, finDeLinea, prod);
                 agregarNodoCabeza();
             }
         } else {                                                                             //Si tiene padre es de la parte derecha de la producción
             if (posicion.getLigaD() == null) {                                                //Si no hay datos insertados a la derecha
                 if (posicion.isFinDeLinea()) {                                                //Si la línea termina ahí, entonces añade nodo cabeza para seguir escribiendo
                     agregarNodoCabeza();
-                    conectarNodo(dato, tipo, finDeLinea);
+                    conectarNodo(dato, tipo, finDeLinea, prod);
                 } else {                                                                     //Si aún no termina de escribir la línea entonces sigue añadiendo hacia la derecha
-                    conectarNodo(dato, tipo, finDeLinea);
+                    conectarNodo(dato, tipo, finDeLinea, prod);
                 }
             } else {                                                                          //Si ya hay datos a la derecha
 //                if(posicion.getLigaD().getDato().equals(dato)){                             //Compara si el dato a ingresar es igual al que ya está guardado y actualiza posición
@@ -90,7 +93,7 @@ public class listaG {
 //                    }
 //                } else{                                                                     //Si es diferente, entonces añade una sub-línea
                 agregarNodoCabeza();
-                conectarNodo(dato, tipo, finDeLinea);
+                conectarNodo(dato, tipo, finDeLinea, prod);
                 //}
             }
         }
@@ -183,8 +186,8 @@ public class listaG {
             p = p.getLigaD();
             if (p.getTipo() == 'T') {
                 if (!p.getDato().equals("/")) {
-                      prim.add(p.getDato());                    
-                }      
+                    prim.add(p.getDato());
+                }
             } else {
                 while (!aux.getDato().equals(p.getDato())) {
                     aux = aux.getLigaD();
@@ -234,10 +237,8 @@ public class listaG {
                 if (reco.getDato().equals(lg.getDato())) {
                     a = reco.getLigaD();
                     if (a == null) {
-                        //validar las siguientes de los mismos
                         if (!reco.getDato().equals(recoP.getDato())) {
-                            sig.add("sig"+recoP.getDato());
-                            
+                            sig.add("sig" + recoP.getDato());
                         }
                         break;
                     }
@@ -261,38 +262,35 @@ public class listaG {
 //                            sig.addAll(primeros(a));
 //                            break;
 //                        }
-                         while (!r.getDato().equals(a.getDato())) { //Ubicamos el no terminal en la lista generalizada
+                        while (!r.getDato().equals(a.getDato())) { //Ubicamos el no terminal en la lista generalizada
                             r = r.getLigaD();
                         }
                         ArrayList anul = anulables();
                         if (anul.contains(a.getDato())) {
                             if (a.isFinDeLinea()) {
                                 sig.addAll(primeros(r));
-                                if(!a.getDato().equals(lg.getDato())){
-                                    sig.add("sig"+recoP.getDato());
+                                if (!a.getDato().equals(lg.getDato())) {
+                                    sig.add("sig" + recoP.getDato());
                                 }
                             } else {
                                 sig.addAll(primeros(r));
-                                a=a.getLigaD();
-                                while(a!=null){                                    
-                                    if(anul.contains(a.getDato())){
+                                a = a.getLigaD();
+                                while (a != null) {
+                                    if (anul.contains(a.getDato())) {
                                         sig.addAll(primeros(r));
-                                        if(a.getLigaD() == null && !a.getDato().equals(recoP.getDato())){
-                                            sig.add("sig"+recoP.getDato());
+                                        if (a.getLigaD() == null && !a.getDato().equals(recoP.getDato())) {
+                                            sig.add("sig" + recoP.getDato());
                                         }
-                                        a=a.getLigaD();                                        
-                                    }
-                                    else
-                                    {
-                                        if(a.getTipo()=='T'){
+                                        a = a.getLigaD();
+                                    } else {
+                                        if (a.getTipo() == 'T') {
                                             sig.add(a.getDato());
                                             break;
-                                        }
-                                        else{
+                                        } else {
                                             sig.addAll(primeros(r));
                                             break;
                                         }
-                                    }                                                                                                            
+                                    }
                                 }
                             }
                         } else {
@@ -301,7 +299,7 @@ public class listaG {
                         }
                     }
                 }
-                r=raiz.getLigaD();
+                r = raiz.getLigaD();
                 reco = reco.getLigaD();
             }
             if (aux.getLigaH() != null) {
@@ -318,12 +316,97 @@ public class listaG {
         }
         Set<String> hashSet = new HashSet<>(sig);
         sig.clear();
-        sig.addAll(hashSet);        
+        sig.addAll(hashSet);
         return sig;
+    }
+
+    public ArrayList getSeleccion() {
+        nodoLg recoP = raiz;
+        nodoLg r = recoP;
+        recoP = recoP.getLigaD();
+        nodoLg recoH = recoP.getLigaH();
+        nodoLg aux = recoH;
+        recoH = recoH.getLigaD();
+        ArrayList anul = anulables();
+        seleccion= new ArrayList<>(getTamano());
+        String ss="";
+        while (recoP != null) {
+
+            if (recoH.getTipo() == 'T') {
+                if (recoH.getDato().equals("/")) {
+                    seleccion.add(recoH.getProduccion()-1, siguientes(recoP));
+                } else {
+                    seleccion.add(recoH.getProduccion()-1,recoH.getDato());
+                }
+            } else {
+                while (!r.getDato().equals(recoH.getDato())) {
+                    r = r.getLigaD();
+                }
+                if (anul.contains(recoH.getDato())) {
+                    String s= primeros(r).toString();
+                    s=s.replace(']', '-');                    
+                    //seleccion.add(recoH.getProduccion()-1, primeros(r));
+                    r = raiz.getLigaD();
+                    if (recoH.getLigaD() != null) {
+                        nodoLg a = recoH.getLigaD();
+                        while (a != null) {
+                            if(a.getTipo()=='T')
+                            {
+                                s = s+a.getDato();
+                                s= s+"]";
+                                seleccion.add(recoH.getProduccion()-1,s);
+                                s="";
+                                break;
+                            }   
+                            while (!r.getDato().equals(a.getDato())) {
+                                r = r.getLigaD();
+                            }
+                            ss= primeros(r).toString().replace('[', ' ');
+                            
+                            s = s+ ss;
+                            //s=s.replace(']', ',');                            
+                            
+                            if (anul.contains(a.getDato())) {
+                                a = a.getLigaD();
+                            } else {
+                                break;
+                            }
+                        }
+                        if(!s.equals("")){
+                            s=s.replaceAll(" ", "");
+                            seleccion.add(recoH.getProduccion()-1,s);
+                        }
+                    }
+                } else {
+                    seleccion.add(recoH.getProduccion()-1, primeros(r));
+                }
+            }
+            if (aux.getLigaH() != null) {
+                aux=aux.getLigaH();
+                recoH=aux.getLigaD();
+            }
+            else{
+                recoP=recoP.getLigaD();
+                if(recoP!=null){
+                    recoH = recoP.getLigaH();
+                    aux = recoH;
+                    recoH = recoH.getLigaD();
+                }
+            }
+        }
+        return seleccion;
     }
 
     public nodoLg getRaiz() {
         return raiz;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
     public nodoLg getPosicion() {

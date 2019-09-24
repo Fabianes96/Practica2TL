@@ -24,6 +24,7 @@ public class nodoLg {
     private nodoLg ligaI;
     private nodoLg ligaH;
     private boolean finDeLinea;
+    private int produccion;
 
     public nodoLg(String dato) {
         this.dato = dato;
@@ -33,6 +34,14 @@ public class nodoLg {
 
     public String getDato() {
         return dato;
+    }
+
+    public int getProduccion() {
+        return produccion;
+    }
+
+    public void setProduccion(int produccion) {
+        this.produccion = produccion;
     }
 
     public void setDato(String dato) {
