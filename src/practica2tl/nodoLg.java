@@ -25,7 +25,7 @@ public class nodoLg {
     private nodoLg ligaH;
     private boolean finDeLinea;
     private int produccion;
-
+    private String nomProduccion;
     public nodoLg(String dato) {
         this.dato = dato;
         ligaD=ligaI=ligaH=null;
@@ -74,6 +74,14 @@ public class nodoLg {
 
     public nodoLg getLigaH() {
         return ligaH;
+    }
+
+    public String getNomProduccion() {
+        return nomProduccion;
+    }
+
+    public void setNomProduccion(String nomProduccion) {
+        this.nomProduccion = nomProduccion;
     }
 
     public void setLigaH(nodoLg ligaH) {

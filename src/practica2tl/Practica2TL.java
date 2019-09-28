@@ -26,11 +26,11 @@ public class Practica2TL {
         v.show();
         
         String s= "<A>=a<B><C>\n<A>=<D>b<A>\n<B>=/\n<B>=b<A><B>\n<C>=c<C>\n<C>=<D>d<B>\n<D>=/\n<D>=e<E>\n<E>=<B><D>\n<E>=f";
-        String ss= "<S>=<S>b\n<S>=c<A>\n<S>=/\n<A>=a<A>\n<A>=a";
+        String ss= "<A>=<B>c<D>a\n<A>=a<B>b\n<B>=b<A><C>\n<B>=/\n<B>=<C><D>a\n<C>=<D>a<B>\n<C>=/\n<D>=d\n<D>=<A><B>c";
         String sss= "<A>=<B>c<D>\n<A>=a<E>\n<B>=b<A>c\n<B>=/\n<D>=d<B><D>c\n<D>=/\n<E>=a\n<E>=<B><D>";
         controlador c = new controlador();
         listaG g;
-        g = c.convertirALg(sss);
+        g = c.convertirALg(ss);
         String aux="";
 //        nodoLg l = g.getRaiz();
 //        
@@ -51,13 +51,14 @@ public class Practica2TL {
 //        }
 //        
 //        System.out.println(aux);
-        nodoLg prueba = g.getPrimer().getLigaD();
+        nodoLg prueba = g.getPrimer().getLigaD().getLigaD();
         nodoLg prueba2 = g.getPrimer().getLigaD().getLigaD();
         System.out.println(prueba.getDato());
         
-       ArrayList ssada = g.validarSiguientes(prueba);
-      String qwerty= ssada.toString();
-        System.out.println(g.primeros(prueba));
+       //ArrayList ssada = g.validarSiguientes(prueba);
+        //ArrayList sadsa= g.primeros(prueba);
+      //String qwerty= ssada.toString();
+       System.out.println(g.validarPrimeros(prueba));
 //        System.out.println(g.siguientes(prueba));
 //        System.out.println(prueba.getLigaD().getDato());
 //        System.out.println(g.siguientes(prueba.getLigaD()));
@@ -71,8 +72,7 @@ public class Practica2TL {
 //        System.out.println(g.seleccionPorProduccion(8));
 //        System.out.println(qwerty);
         
-        System.out.println(c.mostrarSeleccion());
-        
+        System.out.println(g.getSeleccion());
     }
     
 }

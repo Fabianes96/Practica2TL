@@ -25,13 +25,14 @@ public class controlador {
     
     public listaG convertirALg(String s){
         lg =new listaG();        
-        String dato;
+        String dato,nProd;
         char rec,token;        
         boolean ladoiz, finDeLinea;
         String prod[]= s.split("\n");     
         int cont = 0;
         for (String prod1 : prod) {            
             dato = "";
+            nProd="";
             finDeLinea = false;
             ladoiz= true;
             prod1 =prod1.replace(" ", "");
@@ -52,12 +53,11 @@ public class controlador {
                             finDeLinea=true;
                         }
                         if(ladoiz){
-                            
-                            lg.insertarNodo(dato, 'N', false, false,cont);                            
+                            nProd=dato;
+                            lg.insertarNodo(dato, 'N', false, false,cont, nProd);                            
                         }else{
-                            lg.insertarNodo(dato, 'N', finDeLinea, true,cont);                            
-                        }                        
-                        
+                            lg.insertarNodo(dato, 'N', finDeLinea, true,cont,nProd);                            
+                        }                                                
                         dato="";
                         break;
                     case '=':                        
@@ -65,14 +65,14 @@ public class controlador {
                         break;
                     case '/':
                         finDeLinea=true;
-                        lg.insertarNodo(Character.toString(rec),'T' , finDeLinea, true,cont);
+                        lg.insertarNodo(Character.toString(rec),'T' , finDeLinea, true,cont,nProd);
                         i++;
                         break;                    
                     default:
                         if(i+1 == aux.length){
                             finDeLinea=true;                            
                         }
-                        lg.insertarNodo(Character.toString(rec), 'T', finDeLinea, true,cont);                         
+                        lg.insertarNodo(Character.toString(rec), 'T', finDeLinea, true,cont,nProd);                         
                         break;
                 }
             }            
@@ -273,34 +273,88 @@ public class controlador {
             return tieneNulo;
         }
     }
-//    
-//    public boolean esLL1(listaG lg)
-//    {        
-//        reco = lg.getRaiz();
-//        reco = reco.getLigaD();
-//        nodoLg h = reco.getLigaH();
-//        nodoLg aux = h;
+    
+     public boolean hayRamificaciones(nodoLg pos) {
+        do {
+            if (pos.getLigaH() != null) {
+                return false;
+            }
+            if (pos.isFinDeLinea() && pos.getLigaD() != null) {
+                return false;
+            }
+            pos = pos.getLigaD();
+
+        } while (pos.getLigaD() != null);
+        return true;
+    }
+    public boolean esLL1(listaG lg)
+    {        
+        boolean flag= true;
+        ArrayList sel = lg.getSeleccion();
+        String comparacion="27";
 //        if(h.getLigaD().getDato().equals(reco.getDato())){
 //            return false;
 //        }
-//        ArrayList sel = lg.getSeleccion();
-//        
-//        while(h!=null)
-//        {
-//            if(h.getLigaH()!=null)
-//            {
-//                
-//            }
-//            h=h.getLigaH();
-//        }
-//        return true;
-//    }
+        for (int i = 1; i < sel.size()+1; i++) {
+            for (int j = i+1; j < sel.size()+1; j++) {
+                if(lg.seleccionPorProduccion(i).equals(lg.seleccionPorProduccion(j))){
+                    comparacion =comparacion + Integer.toString(i)+Integer.toString(j);
+                }
+            }
+        }
+        if(comparacion.equals("")){
+            return true;
+        }
+        else{
+            reco = lg.getRaiz();
+            reco = reco.getLigaD();
+            nodoLg h = reco.getLigaH();
+            nodoLg aux = h;
+            String s="";
+            int i=0;
+            while(reco!=null){
+                if(i>s.length())
+                {
+                    break;
+                }
+                if(h.getLigaD().getProduccion()== (int)comparacion.charAt(i)){
+                    s = s +h.getLigaD().getNomProduccion();
+                    i++;
+                    reco=lg.getRaiz().getLigaD();
+                    h= reco.getLigaH();
+                }
+                else{                    
+                    h=h.getLigaH();
+                    if(h==null){
+                        reco= reco.getLigaD();
+                        if(reco!=null){
+                            h=reco.getLigaH();
+                        }
+                    }                    
+                }
+            }            
+            for (int j = 0; j < s.length(); j++) {
+                if(j+1 >s.length()){
+                    break;
+                }
+                if(s.charAt(j)== s.charAt(j+1) && j+1%2!=0){
+                    flag = false;
+                }                
+            }
+            return flag;
+        }
+        
+        
+        
+        
+        
+    }
     public String mostrarPrimeros(){
         String primeros="";
         nodoLg l = lg.getRaiz().getLigaD();
         while(l!=null)
         {
-            primeros = primeros +"(<"+l.getDato()+">): " + lg.primeros(l).toString()+"\n";
+            primeros = primeros +"(<"+l.getDato()+">): " + lg.validarPrimeros(l).toString()+"\n";
             l=l.getLigaD();
         }
         return primeros; 

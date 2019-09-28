@@ -38,7 +38,7 @@ public class listaG {
         return p == null;
     }
 
-    public void conectarNodo(String dato, char tipo, boolean fin, int prod) {                          //Conecta un nuevo nodo hacia la derecha
+    public void conectarNodo(String dato, char tipo, boolean fin, int prod, String nProd) {                          //Conecta un nuevo nodo hacia la derecha
         nodoLg dat = new nodoLg(dato);
         dat.setTipo(tipo);
         dat.setFinDeLinea(fin);
@@ -46,6 +46,7 @@ public class listaG {
         dat.setLigaI(posicion);
         posicion = dat;
         dat.setProduccion(prod);
+        dat.setNomProduccion(nProd);
     }
 
     public boolean encontrarDato(String d) {                                                 //Recorre la línea principal desde la raíz para buscar un NT
@@ -69,21 +70,21 @@ public class listaG {
 
     }
 
-    public void insertarNodo(String dato, char tipo, boolean finDeLinea, boolean padre, int prod) {    //Hace las validaciones para insertar T y NT a la lista
+    public void insertarNodo(String dato, char tipo, boolean finDeLinea, boolean padre, int prod, String nProd) {    //Hace las validaciones para insertar T y NT a la lista
         if (padre == false) {                                                                   //Si no tiene padre entonces se encuentra en la parte izquierda de la producción
             if (encontrarDato(dato)) {                                                        //Si encuentra que el NT ya existe, entonces actualiza posicion para agregar ahí
                 posicion = posicion.getLigaH();
             } else {                                                                           //Si no existe el NT, entonces lo agrega y le añade un nodo cabeza para empezar a agregar ahí
-                conectarNodo(dato, tipo, finDeLinea, prod);
+                conectarNodo(dato, tipo, finDeLinea, prod, nProd);
                 agregarNodoCabeza();
             }
         } else {                                                                             //Si tiene padre es de la parte derecha de la producción
             if (posicion.getLigaD() == null) {                                                //Si no hay datos insertados a la derecha
                 if (posicion.isFinDeLinea()) {                                                //Si la línea termina ahí, entonces añade nodo cabeza para seguir escribiendo
                     agregarNodoCabeza();
-                    conectarNodo(dato, tipo, finDeLinea, prod);
+                    conectarNodo(dato, tipo, finDeLinea, prod, nProd);
                 } else {                                                                     //Si aún no termina de escribir la línea entonces sigue añadiendo hacia la derecha
-                    conectarNodo(dato, tipo, finDeLinea, prod);
+                    conectarNodo(dato, tipo, finDeLinea, prod,nProd);
                 }
             } else {                                                                          //Si ya hay datos a la derecha
 //                if(posicion.getLigaD().getDato().equals(dato)){                             //Compara si el dato a ingresar es igual al que ya está guardado y actualiza posición
@@ -93,7 +94,7 @@ public class listaG {
 //                    }
 //                } else{                                                                     //Si es diferente, entonces añade una sub-línea
                 agregarNodoCabeza();
-                conectarNodo(dato, tipo, finDeLinea, prod);
+                conectarNodo(dato, tipo, finDeLinea, prod, nProd);
                 //}
             }
         }
@@ -195,7 +196,7 @@ public class listaG {
                 if (esAnulable(aux)) {
 
                     if (!aux.getDato().equals(lg.getDato())) {
-                        prim.addAll(primeros(aux));
+                        prim.add("Prim"+aux.getDato());
                     }
                     if (p.getLigaD() != null) {
                         if (p.getLigaD().getTipo() == 'N') {
@@ -203,14 +204,14 @@ public class listaG {
                             while (!a.getDato().equals(p.getLigaD().getDato())) {
                                 a = a.getLigaD();
                             }
-                            prim.addAll(primeros(a));
+                            prim.add("Prim"+a.getDato());
                         } else {
                             prim.add(p.getLigaD().getDato());
                         }
                     }
                 } else {
                     if (!aux.getDato().equals(lg.getDato())) {
-                        prim.addAll(primeros(aux));
+                        prim.add("Prim"+aux.getDato());
                     }
                 }
             }
@@ -218,21 +219,7 @@ public class listaG {
             p = recoH;
         }
         return prim;
-    }
-
-    public boolean hayRamificaciones(nodoLg pos) {
-        do {
-            if (pos.getLigaH() != null) {
-                return false;
-            }
-            if (pos.isFinDeLinea() && pos.getLigaD() != null) {
-                return false;
-            }
-            pos = pos.getLigaD();
-
-        } while (pos.getLigaD() != null);
-        return true;
-    }
+    }   
 
     public ArrayList siguientes(nodoLg lg) {
 
@@ -266,16 +253,16 @@ public class listaG {
                         ArrayList anul = anulables();
                         if (anul.contains(a.getDato())) {
                             if (a.isFinDeLinea()) {
-                                sig.addAll(primeros(r));
+                                sig.addAll(validarPrimeros(r));
                                 if (!a.getDato().equals(lg.getDato())) {
                                     sig.add("sig" + recoP.getDato());
                                 }
                             } else {
-                                sig.addAll(primeros(r));
+                                sig.addAll(validarPrimeros(r));
                                 a = a.getLigaD();
                                 while (a != null) {
                                     if (anul.contains(a.getDato())) {
-                                        sig.addAll(primeros(r));
+                                        sig.addAll(validarPrimeros(r));
                                         if (a.getLigaD() == null && !a.getDato().equals(recoP.getDato())) {
                                             sig.add("sig" + recoP.getDato());
                                         }
@@ -285,14 +272,14 @@ public class listaG {
                                             sig.add(a.getDato());
                                             break;
                                         } else {
-                                            sig.addAll(primeros(r));
+                                            sig.addAll(validarPrimeros(r));
                                             break;
                                         }
                                     }
                                 }
                             }
                         } else {
-                            sig.addAll(primeros(r));
+                            sig.addAll(validarPrimeros(r));
                             break;
                         }
                     }
@@ -318,7 +305,46 @@ public class listaG {
         sig.addAll(hashSet);
         return sig;
     }
-
+    
+    public ArrayList validarPrimeros(nodoLg lg){
+        ArrayList a = primeros(lg);
+        ArrayList retorno = primeros(lg);
+        nodoLg pos = raiz.getLigaD();
+        String analizados=lg.getDato();
+        boolean flag =true;
+        do {
+            for (Object e : a) {
+                if (e.toString().contains("Prim")) {
+                    int c = e.toString().indexOf('m') + 1;
+                    String s = e.toString().substring(c);
+                    if (analizados.contains(s)) {
+                        retorno.remove(e);
+                    } else {
+                        while (!pos.getDato().equals(s)) {
+                            pos = pos.getLigaD();
+                        }
+                        retorno.remove(e);
+                        retorno.addAll(primeros(pos));
+                        flag = false;
+                        analizados = analizados + pos.getDato();
+                        pos = raiz.getLigaD();
+                    }
+                }
+            }
+            String c = retorno.toString();
+            if (!c.contains("Prim")) {
+                flag = true;
+            } else {
+                a.clear();
+                a.addAll(retorno);
+            }            
+        } while (flag!=true);
+        Set<String> hashSet = new HashSet<>(retorno);
+        retorno.clear();
+        retorno.addAll(hashSet);
+        
+        return retorno;        
+    }
     public ArrayList validarSiguientes(nodoLg lg) {
         ArrayList a = siguientes(lg);
         ArrayList otro = siguientes(lg);
@@ -327,7 +353,6 @@ public class listaG {
         String analizados = lg.getDato();
         boolean flag = true;
         do {
-
             for (Object e : a) {
                 if (e.toString().contains(sig)) {
                     int c = e.toString().indexOf('g') + 1;
@@ -386,7 +411,7 @@ public class listaG {
                     r = r.getLigaD();
                 }
                 if (anul.contains(recoH.getDato())) {
-                    String s = primeros(r).toString();
+                    String s = validarPrimeros(r).toString();
                     s = s.replace(']', ',');
                     r = raiz.getLigaD();
                     if (recoH.getLigaD() != null) {
@@ -402,7 +427,7 @@ public class listaG {
                             while (!r.getDato().equals(a.getDato())) {
                                 r = r.getLigaD();
                             }
-                            ss = primeros(r).toString().replace('[', ' ');
+                            ss = validarPrimeros(r).toString().replace('[', ' ');
 
                             s = s + ss;
 
@@ -421,7 +446,8 @@ public class listaG {
                         }
                     }
                 } else {
-                    seleccion.add(recoH.getProduccion() - 1, primeros(r));
+                    seleccion.add(recoH.getProduccion() - 1, validarPrimeros(r));
+                    r=raiz.getLigaD();
                 }
             }
             if (aux.getLigaH() != null) {
