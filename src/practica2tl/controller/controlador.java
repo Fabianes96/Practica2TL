@@ -291,10 +291,21 @@ public class controlador {
     {        
         boolean flag= true;
         ArrayList sel = lg.getSeleccion();
-        String comparacion="27";
-//        if(h.getLigaD().getDato().equals(reco.getDato())){
-//            return false;
-//        }
+        String comparacion="";        
+        reco = lg.getRaiz();
+        reco = reco.getLigaD();
+        nodoLg h = reco.getLigaH();
+        while(reco!=null){            
+            if(h.getLigaD().getDato().equals(reco.getDato())){
+                return false;
+            }
+            h=h.getLigaH();
+            if(h==null){
+                reco=reco.getLigaD();
+                h=reco.getLigaH();
+            }
+        }
+        
         for (int i = 1; i < sel.size()+1; i++) {
             for (int j = i+1; j < sel.size()+1; j++) {
                 if(lg.seleccionPorProduccion(i).equals(lg.seleccionPorProduccion(j))){
@@ -306,10 +317,8 @@ public class controlador {
             return true;
         }
         else{
-            reco = lg.getRaiz();
-            reco = reco.getLigaD();
-            nodoLg h = reco.getLigaH();
-            nodoLg aux = h;
+            reco= lg.getRaiz().getLigaD();
+            h=reco.getLigaH();
             String s="";
             int i=0;
             while(reco!=null){

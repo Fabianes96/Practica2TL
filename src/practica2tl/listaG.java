@@ -418,10 +418,18 @@ public class listaG {
                         nodoLg a = recoH.getLigaD();
                         while (a != null) {
                             if (a.getTipo() == 'T') {
-                                s = s + a.getDato();
-                                s = s + "]";
-                                seleccion.add(recoH.getProduccion() - 1, s);
-                                s = "";
+                                if(!s.contains(a.getDato())){
+                                    s = s + a.getDato();
+                                    s = s + "]";
+                                    seleccion.add(recoH.getProduccion() - 1, s);
+                                    s = "";                                    
+                                }
+                                else{
+                                    s=s.substring(0, s.length()-1);
+                                    s= s+"]";
+                                    seleccion.add(recoH.getProduccion()-1,s);
+                                    s="";
+                                }
                                 break;
                             }
                             while (!r.getDato().equals(a.getDato())) {
