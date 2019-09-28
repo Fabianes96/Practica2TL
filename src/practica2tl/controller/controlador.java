@@ -5,6 +5,7 @@
  */
 package practica2tl.controller;
 
+import java.util.ArrayList;
 import practica2tl.listaG;
 import practica2tl.nodoLg;
 
@@ -91,7 +92,7 @@ public class controlador {
         reco = reco.getLigaD();
         nodoLg h = reco.getLigaH();
         nodoLg aux;                         
-        while(reco != null){                                                    //Recorre los nodos padres
+        while(reco != null){                                                    
             if(h.getLigaD() == null ||h.getLigaD().getTipo()!='T' )
             {
                 return false;
@@ -271,6 +272,28 @@ public class controlador {
             return tieneNulo;
         }
     }
-    
+//    
+//    public boolean esLL1(listaG lg)
+//    {        
+//        reco = lg.getRaiz();
+//        reco = reco.getLigaD();
+//        nodoLg h = reco.getLigaH();
+//        nodoLg aux = h;
+//        if(h.getLigaD().getDato().equals(reco.getDato())){
+//            return false;
+//        }
+//        ArrayList sel = lg.getSeleccion();
+//        
+//        while(h!=null)
+//        {
+//            if(h.getLigaH()!=null)
+//            {
+//                
+//            }
+//            h=h.getLigaH();
+//        }
+//        return true;
+//    }
+   
     
 }

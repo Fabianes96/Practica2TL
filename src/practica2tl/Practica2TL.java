@@ -27,15 +27,17 @@ public class Practica2TL {
         
         String s= "<A>=a<B><C>\n<A>=<D>b<A>\n<B>=/\n<B>=b<A><B>\n<C>=c<C>\n<C>=<D>d<B>\n<D>=/\n<D>=e<E>\n<E>=<B><D>\n<E>=f";
         String ss= "<S>=<S>b\n<S>=c<A>\n<S>=/\n<A>=a<A>\n<A>=a";
+        String sss= "<A>=<B>c<D>\n<A>=a<E>\n<B>=b<A>c\n<B>=/\n<D>=d<B><D>c\n<D>=/\n<E>=a\n<E>=<B><D>";
         controlador c = new controlador();
         listaG g;
-        g = c.convertirALg(s);
+        g = c.convertirALg(sss);
         String aux="";
 //        nodoLg l = g.getRaiz();
 //        
 //        l=l.getLigaD();
 //        nodoLg a=l.getLigaH();
 //        aux = l.getDato();
+        
 //        l= a;
 //        while(a!=null)
 //        {
@@ -49,13 +51,25 @@ public class Practica2TL {
 //        }
 //        
 //        System.out.println(aux);
-        nodoLg prueba = g.getPrimer().getLigaD();
-          System.out.println(g.getTamano());
+        nodoLg prueba = g.getPrimer().getLigaD().getLigaD().getLigaD().getLigaD();
+        nodoLg prueba2 = g.getPrimer().getLigaD().getLigaD();
+        System.out.println(prueba.getDato());
         
+       ArrayList ssada = g.validarSiguientes(prueba);
+      String qwerty= ssada.toString();
+//        System.out.println(g.siguientes(prueba));
+//        System.out.println(prueba.getLigaD().getDato());
+//        System.out.println(g.siguientes(prueba.getLigaD()));
+//        System.out.println(prueba.getLigaD().getLigaD().getDato());
+//        System.out.println(g.siguientes(prueba.getLigaD().getLigaD()));
+//        System.out.println(prueba.getLigaD().getLigaD().getLigaD().getDato());
+//        System.out.println(g.siguientes(prueba.getLigaD().getLigaD().getLigaD()));
+//        System.out.println(prueba.getLigaD().getLigaD().getLigaD().getLigaD().getDato());
+//        System.out.println(g.siguientes(prueba.getLigaD().getLigaD().getLigaD().getLigaD()));
         System.out.println(g.getSeleccion());
-        System.out.println(g.getSeleccion().get(2));  
-//        System.out.println(prueba.getProduccion());
-        //System.out.println(g.siguientes(prueba));    
+//        
+        System.out.println(qwerty);
+        
     }
     
 }

@@ -7,6 +7,7 @@ package practica2tl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -26,7 +27,6 @@ public class listaG {
     public listaG() {
         nodoLg x = new nodoLg("*");
         posicion = raiz = primer = ultimo = x;
-
     }
 
     public boolean isEnd(nodoLg l) {
@@ -219,8 +219,22 @@ public class listaG {
         }
         return prim;
     }
+     public boolean hayRamificaciones(nodoLg pos){
+        do {            
+            if(pos.getLigaH()!=null){
+                return false;
+            }
+            if(pos.isFinDeLinea() && pos.getLigaD()!=null){
+                return false;
+            }
+            pos = pos.getLigaD();
+            
+        } while (pos.getLigaD()!=null);
+        return true;
+    }
 
     public ArrayList siguientes(nodoLg lg) {
+        
         ArrayList<String> sig = new ArrayList<>();
         nodoLg r = raiz.getLigaD();
         nodoLg recoP = r;
@@ -233,7 +247,6 @@ public class listaG {
         reco = reco.getLigaD();
         while (recoP != null) {
             while (reco != null) {
-
                 if (reco.getDato().equals(lg.getDato())) {
                     a = reco.getLigaD();
                     if (a == null) {
@@ -246,22 +259,6 @@ public class listaG {
                         sig.add(a.getDato());
                         break;
                     } else {
-//                        while (!r.getDato().equals(a.getDato())) { //Ubicamos el no terminal en la lista generalizada
-//                            r = r.getLigaD();
-//                        }
-//                        if (esAnulable(r)) {
-//                            if (a.isFinDeLinea()) {
-//                                sig.addAll(primeros(a));
-//                                //siguientes de la produccion                                    
-//                            } else {
-//                                sig.addAll(primeros(a));
-//                                sig.addAll(siguientes(a.getLigaD()));
-//                                break;
-//                            }
-//                        } else {
-//                            sig.addAll(primeros(a));
-//                            break;
-//                        }
                         while (!r.getDato().equals(a.getDato())) { //Ubicamos el no terminal en la lista generalizada
                             r = r.getLigaD();
                         }
@@ -314,11 +311,63 @@ public class listaG {
                 }
             }
         }
+        
         Set<String> hashSet = new HashSet<>(sig);
         sig.clear();
         sig.addAll(hashSet);
         return sig;
     }
+    
+    public ArrayList validarSiguientes(nodoLg lg){
+        ArrayList a = siguientes(lg);
+        ArrayList otro = siguientes(lg);
+        nodoLg pos = raiz.getLigaD();
+        String sig ="sig";
+        String analizados=lg.getDato();
+        boolean flag = true;
+        do {  
+            
+            for (Object e : a) {
+                if(e.toString().contains(sig))
+                {                    
+                    int c = e.toString().indexOf('g')+1;
+                    String aaa= e.toString().substring(c);
+                    if(analizados.contains(aaa))
+                    {
+                        otro.remove(e);
+                    }
+                    else
+                    {
+                        while(!pos.getDato().equals(aaa)){
+                            pos=pos.getLigaD();
+                        }
+                        otro.remove(e);
+                        otro.addAll(siguientes(pos));
+                        flag= false;
+                        analizados=analizados + pos.getDato(); 
+                        pos=raiz.getLigaD();
+                                               
+                    }
+                }
+            }            
+            String c =otro.toString();            
+            if(!c.contains("sig"))
+            {
+                flag=true;
+            }
+            else
+            {                
+                a.clear();
+                a.addAll(otro);
+            }
+        } while (flag!=true);        
+        
+        Set<String> hashSet = new HashSet<>(otro);
+        otro.clear();
+        otro.addAll(hashSet);       
+        
+        return otro;
+    }  
 
     public ArrayList getSeleccion() {
         nodoLg recoP = raiz;
@@ -334,7 +383,7 @@ public class listaG {
 
             if (recoH.getTipo() == 'T') {
                 if (recoH.getDato().equals("/")) {
-                    seleccion.add(recoH.getProduccion()-1, siguientes(recoP));
+                    seleccion.addAll(recoH.getProduccion()-1, siguientes(recoP));
                 } else {
                     seleccion.add(recoH.getProduccion()-1,recoH.getDato());
                 }
@@ -345,7 +394,6 @@ public class listaG {
                 if (anul.contains(recoH.getDato())) {
                     String s= primeros(r).toString();
                     s=s.replace(']', '-');                    
-                    //seleccion.add(recoH.getProduccion()-1, primeros(r));
                     r = raiz.getLigaD();
                     if (recoH.getLigaD() != null) {
                         nodoLg a = recoH.getLigaD();
@@ -364,10 +412,13 @@ public class listaG {
                             ss= primeros(r).toString().replace('[', ' ');
                             
                             s = s+ ss;
-                            //s=s.replace(']', ',');                            
                             
                             if (anul.contains(a.getDato())) {
                                 a = a.getLigaD();
+                                if(a==null)
+                                {
+                                    s= s+ siguientes(recoP).toString();
+                                }
                             } else {
                                 break;
                             }
