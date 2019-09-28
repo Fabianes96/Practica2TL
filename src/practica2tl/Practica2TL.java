@@ -22,8 +22,8 @@ public class Practica2TL {
      */
     public static void main(String[] args) {
 //         TODO code application logic here
-//        view v = new view();
-//        v.show();
+        view v = new view();
+        v.show();
         
         String s= "<A>=a<B><C>\n<A>=<D>b<A>\n<B>=/\n<B>=b<A><B>\n<C>=c<C>\n<C>=<D>d<B>\n<D>=/\n<D>=e<E>\n<E>=<B><D>\n<E>=f";
         String ss= "<S>=<S>b\n<S>=c<A>\n<S>=/\n<A>=a<A>\n<A>=a";
@@ -51,12 +51,13 @@ public class Practica2TL {
 //        }
 //        
 //        System.out.println(aux);
-        nodoLg prueba = g.getPrimer().getLigaD().getLigaD().getLigaD().getLigaD();
+        nodoLg prueba = g.getPrimer().getLigaD();
         nodoLg prueba2 = g.getPrimer().getLigaD().getLigaD();
         System.out.println(prueba.getDato());
         
        ArrayList ssada = g.validarSiguientes(prueba);
       String qwerty= ssada.toString();
+        System.out.println(g.primeros(prueba));
 //        System.out.println(g.siguientes(prueba));
 //        System.out.println(prueba.getLigaD().getDato());
 //        System.out.println(g.siguientes(prueba.getLigaD()));
@@ -66,9 +67,11 @@ public class Practica2TL {
 //        System.out.println(g.siguientes(prueba.getLigaD().getLigaD().getLigaD()));
 //        System.out.println(prueba.getLigaD().getLigaD().getLigaD().getLigaD().getDato());
 //        System.out.println(g.siguientes(prueba.getLigaD().getLigaD().getLigaD().getLigaD()));
-        System.out.println(g.getSeleccion());
-//        
-        System.out.println(qwerty);
+//        System.out.println(g.getSeleccion());
+//        System.out.println(g.seleccionPorProduccion(8));
+//        System.out.println(qwerty);
+        
+        System.out.println(c.mostrarSeleccion());
         
     }
     

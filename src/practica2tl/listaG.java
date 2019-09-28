@@ -219,22 +219,23 @@ public class listaG {
         }
         return prim;
     }
-     public boolean hayRamificaciones(nodoLg pos){
-        do {            
-            if(pos.getLigaH()!=null){
+
+    public boolean hayRamificaciones(nodoLg pos) {
+        do {
+            if (pos.getLigaH() != null) {
                 return false;
             }
-            if(pos.isFinDeLinea() && pos.getLigaD()!=null){
+            if (pos.isFinDeLinea() && pos.getLigaD() != null) {
                 return false;
             }
             pos = pos.getLigaD();
-            
-        } while (pos.getLigaD()!=null);
+
+        } while (pos.getLigaD() != null);
         return true;
     }
 
     public ArrayList siguientes(nodoLg lg) {
-        
+
         ArrayList<String> sig = new ArrayList<>();
         nodoLg r = raiz.getLigaD();
         nodoLg recoP = r;
@@ -311,63 +312,56 @@ public class listaG {
                 }
             }
         }
-        
+
         Set<String> hashSet = new HashSet<>(sig);
         sig.clear();
         sig.addAll(hashSet);
         return sig;
     }
-    
-    public ArrayList validarSiguientes(nodoLg lg){
+
+    public ArrayList validarSiguientes(nodoLg lg) {
         ArrayList a = siguientes(lg);
         ArrayList otro = siguientes(lg);
         nodoLg pos = raiz.getLigaD();
-        String sig ="sig";
-        String analizados=lg.getDato();
+        String sig = "sig";
+        String analizados = lg.getDato();
         boolean flag = true;
-        do {  
-            
+        do {
+
             for (Object e : a) {
-                if(e.toString().contains(sig))
-                {                    
-                    int c = e.toString().indexOf('g')+1;
-                    String aaa= e.toString().substring(c);
-                    if(analizados.contains(aaa))
-                    {
+                if (e.toString().contains(sig)) {
+                    int c = e.toString().indexOf('g') + 1;
+                    String aaa = e.toString().substring(c);
+                    if (analizados.contains(aaa)) {
                         otro.remove(e);
-                    }
-                    else
-                    {
-                        while(!pos.getDato().equals(aaa)){
-                            pos=pos.getLigaD();
+                    } else {
+                        while (!pos.getDato().equals(aaa)) {
+                            pos = pos.getLigaD();
                         }
                         otro.remove(e);
                         otro.addAll(siguientes(pos));
-                        flag= false;
-                        analizados=analizados + pos.getDato(); 
-                        pos=raiz.getLigaD();
-                                               
+                        flag = false;
+                        analizados = analizados + pos.getDato();
+                        pos = raiz.getLigaD();
+
                     }
                 }
-            }            
-            String c =otro.toString();            
-            if(!c.contains("sig"))
-            {
-                flag=true;
             }
-            else
-            {                
+            String c = otro.toString();
+            if (!c.contains("sig")) {
+                flag = true;
+            } else {
                 a.clear();
                 a.addAll(otro);
             }
-        } while (flag!=true);        
-        
+        } while (flag != true);
+
         Set<String> hashSet = new HashSet<>(otro);
         otro.clear();
-        otro.addAll(hashSet);       
-        
+        otro.addAll(hashSet);
+
         return otro;
-    }  
+    }
 
     public ArrayList getSeleccion() {
         nodoLg recoP = raiz;
@@ -377,68 +371,65 @@ public class listaG {
         nodoLg aux = recoH;
         recoH = recoH.getLigaD();
         ArrayList anul = anulables();
-        seleccion= new ArrayList<>(getTamano());
-        String ss="";
+        seleccion = new ArrayList<>(getTamano());
+        String ss = "";
         while (recoP != null) {
 
             if (recoH.getTipo() == 'T') {
                 if (recoH.getDato().equals("/")) {
-                    seleccion.addAll(recoH.getProduccion()-1, siguientes(recoP));
+                    seleccion.add(recoH.getProduccion() - 1, validarSiguientes(recoP));
                 } else {
-                    seleccion.add(recoH.getProduccion()-1,recoH.getDato());
+                    seleccion.add(recoH.getProduccion() - 1, recoH.getDato());
                 }
             } else {
                 while (!r.getDato().equals(recoH.getDato())) {
                     r = r.getLigaD();
                 }
                 if (anul.contains(recoH.getDato())) {
-                    String s= primeros(r).toString();
-                    s=s.replace(']', '-');                    
+                    String s = primeros(r).toString();
+                    s = s.replace(']', ',');
                     r = raiz.getLigaD();
                     if (recoH.getLigaD() != null) {
                         nodoLg a = recoH.getLigaD();
                         while (a != null) {
-                            if(a.getTipo()=='T')
-                            {
-                                s = s+a.getDato();
-                                s= s+"]";
-                                seleccion.add(recoH.getProduccion()-1,s);
-                                s="";
+                            if (a.getTipo() == 'T') {
+                                s = s + a.getDato();
+                                s = s + "]";
+                                seleccion.add(recoH.getProduccion() - 1, s);
+                                s = "";
                                 break;
-                            }   
+                            }
                             while (!r.getDato().equals(a.getDato())) {
                                 r = r.getLigaD();
                             }
-                            ss= primeros(r).toString().replace('[', ' ');
-                            
-                            s = s+ ss;
-                            
+                            ss = primeros(r).toString().replace('[', ' ');
+
+                            s = s + ss;
+
                             if (anul.contains(a.getDato())) {
                                 a = a.getLigaD();
-                                if(a==null)
-                                {
-                                    s= s+ siguientes(recoP).toString();
+                                if (a == null) {
+                                    s = s + validarSiguientes(recoP).toString();
                                 }
                             } else {
                                 break;
                             }
                         }
-                        if(!s.equals("")){
-                            s=s.replaceAll(" ", "");
-                            seleccion.add(recoH.getProduccion()-1,s);
+                        if (!s.equals("")) {
+                            s = s.replaceAll(" ", "");
+                            seleccion.add(recoH.getProduccion() - 1, s);
                         }
                     }
                 } else {
-                    seleccion.add(recoH.getProduccion()-1, primeros(r));
+                    seleccion.add(recoH.getProduccion() - 1, primeros(r));
                 }
             }
             if (aux.getLigaH() != null) {
-                aux=aux.getLigaH();
-                recoH=aux.getLigaD();
-            }
-            else{
-                recoP=recoP.getLigaD();
-                if(recoP!=null){
+                aux = aux.getLigaH();
+                recoH = aux.getLigaD();
+            } else {
+                recoP = recoP.getLigaD();
+                if (recoP != null) {
                     recoH = recoP.getLigaH();
                     aux = recoH;
                     recoH = recoH.getLigaD();
@@ -446,6 +437,24 @@ public class listaG {
             }
         }
         return seleccion;
+    }
+
+    public String seleccionPorProduccion(int prod) {
+        String retorno;
+        seleccion = getSeleccion();
+        ArrayList a = seleccion;
+        retorno = a.get(prod - 1).toString();
+        char[] c = retorno.toCharArray();
+        String s = "[";
+        for (char d : c) {
+            if (d == '[' || d == ',' || d == ']' || d == ' ') {
+            } else {
+                s = s + d + " ";
+            }
+        }
+        s = s.replaceAll(" ", ",");
+        retorno = s.substring(0, s.length() - 1).concat("]");
+        return retorno;
     }
 
     public nodoLg getRaiz() {

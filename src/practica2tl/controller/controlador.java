@@ -6,6 +6,7 @@
 package practica2tl.controller;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import practica2tl.listaG;
 import practica2tl.nodoLg;
 
@@ -294,6 +295,54 @@ public class controlador {
 //        }
 //        return true;
 //    }
+    public String mostrarPrimeros(){
+        String primeros="";
+        nodoLg l = lg.getRaiz().getLigaD();
+        while(l!=null)
+        {
+            primeros = primeros +"(<"+l.getDato()+">): " + lg.primeros(l).toString()+"\n";
+            l=l.getLigaD();
+        }
+        return primeros; 
+    }
+    public String mostrarSiguientes(){
+        String sgtes="";
+        nodoLg l = lg.getRaiz().getLigaD();
+        while(l!=null)
+        {
+            sgtes = sgtes +"(<"+l.getDato()+">): " + lg.validarSiguientes(l)+"\n";
+            l=l.getLigaD();
+        }
+        return sgtes;
+    }
+    public String mostrarSeleccion(){
+        String sel="";
+        ArrayList s = lg.getSeleccion();
+        nodoLg l = lg.getRaiz().getLigaD();
+        while(true)
+        {
+            if(l.getLigaD()==null){
+                break;
+            }
+            l=l.getLigaD();            
+        }
+        nodoLg h = l.getLigaH();
+        while(true)
+        {
+            if(h.getLigaH()==null){
+                break;
+            }
+            h=h.getLigaH();            
+        }
+        int p = h.getLigaD().getProduccion();
+        for (int i = 1; i < p+1; i++) {
+            sel = sel +"Prod (" +i+"): "+ lg.seleccionPorProduccion(i)+"\n";
+        }
+        return sel;
+        
+    }
    
-    
+    public void mostrarMensaje(String mensaje){
+        JOptionPane.showMessageDialog(null, mensaje);  
+    }
 }
