@@ -23,7 +23,7 @@ public class Practica2TL {
     public static void main(String[] args) {
 //         TODO code application logic here
         view v = new view();
-        v.show();        
+        v.show();       
     }
     
 }

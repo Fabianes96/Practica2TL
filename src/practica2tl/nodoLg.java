@@ -16,6 +16,8 @@ public class nodoLg {
         2. Tipo (T o NT)
         3. Tres ligas (izquierda, derecha, hijo)
         4. Fin de línea
+        5. Número de la producción a la que pertenece
+        6. Nombre del No terminal al que pertenece
     */
     
     private String dato;
