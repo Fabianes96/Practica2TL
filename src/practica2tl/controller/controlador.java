@@ -35,7 +35,7 @@ public class controlador {
         //Dividimos el string ingresado cada vez que haya un salto de linea
         String prod[]= s.split("\n");     
         //contador
-        int cont = 0;
+        int cont = 0,c;
         //Ciclo for para cada elemento en el arreglo prod
         for (String prod1 : prod) {            
             //Instanciaciones
@@ -48,6 +48,7 @@ public class controlador {
             //Se elimina "\r" que aparece al cargar un archivo y se deja solo "\n"
             prod1 = prod1.replace("\r", "");
             cont++;
+            c=0;
             //Convertimos el string que haya en prod1 a un arreglo de char
             //Este string prod1 corresponde a una producción
             char[] aux = prod1.toCharArray();
@@ -79,7 +80,14 @@ public class controlador {
                         break;
                     case '=':           
                         //Si el simbolo es = quiere decir que ya se analizó el lado izquierdo
+                        
+                        if(c!=0){
+                            lg.insertarNodo(null,' ',false,false,0,null);
+                        }
                         ladoiz=false;
+                        c++;
+
+                        
                         break;
                     case '/': //Simbolo definido para producciones nulas
                         finDeLinea=true;
@@ -87,6 +95,9 @@ public class controlador {
                         i++;
                         break;                    
                     default:// caso general que puede ser cualquier terminal
+                        if(ladoiz==true){
+                            lg.insertarNodo(null,' ',false,false,0,null);
+                        }
                         if(i+1 == aux.length){
                             finDeLinea=true;                            
                         }
@@ -422,8 +433,8 @@ public class controlador {
             ArrayList s = lg.getSeleccion();
             
         } catch (Exception e) {
-            mostrarMensaje("Error al procesar la selección."
-                    + "Asegurese que no haya saltos de linea entre las producciones");
+            mostrarMensaje("Error al procesar la selección.\n"
+                    + "Asegurese que no haya saltos de linea entre las producciones o que estas estén en desorden");
             return sel;
         }
         
