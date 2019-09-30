@@ -166,13 +166,24 @@ public class controladorInt {
         cc.mostrarMensaje(mensaje);
     }
     //Método para cargar el contenido del string que tiene el archivo de texto a un JTextArea  
-    public void btnCargar(JTextArea jt){
+    public void btnCargar(JTextArea jt, JTextArea jt2, JButton btn,JButton Validar,JButton Editar,
+            JLabel esp,JLabel lpd, JLabel s, JLabel q, JLabel ll ){
         if(fc.showDialog(null, "Abrir")==JFileChooser.APPROVE_OPTION){
             archivo=fc.getSelectedFile();
             if(archivo.canRead()){
                 if(archivo.getName().endsWith("txt")){
-                    String s = cargar(archivo);
-                    jt.setText(s);
+                    String ss = cargar(archivo);
+                    jt.setText(ss);
+                    jt2.setText("");
+                    btn.setEnabled(true);
+                    Editar.setEnabled(false);
+                    Validar.setEnabled(false);
+                    //Muestra los labels ocultos
+                    esp.setVisible(false);
+                    lpd.setVisible(false);
+                    s.setVisible(false);
+                    q.setVisible(false);
+                    ll.setVisible(false);
                 }else{
                     JOptionPane.showMessageDialog(null, "Archivo no compatible");
                 }                

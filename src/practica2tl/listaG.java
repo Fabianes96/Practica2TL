@@ -29,7 +29,7 @@ public class listaG {
         nodoLg x = new nodoLg("*");
         posicion = raiz = primer = ultimo = x;
     }    
-//Conecta un nuevo nodo hacia la derecha
+    //Conecta un nuevo nodo hacia la derecha
     public void conectarNodo(String dato, char tipo, boolean fin, int prod, String nProd) {
         nodoLg dat = new nodoLg(dato);
         dat.setTipo(tipo);
@@ -40,7 +40,7 @@ public class listaG {
         dat.setProduccion(prod);
         dat.setNomProduccion(nProd);
     }
-//Recorre la línea principal desde la raíz para buscar un NT
+    //Recorre la línea principal desde la raíz para buscar un NT
     public boolean encontrarDato(String d) {                                                 
         posicion = raiz;
         while (posicion.getLigaD() != null) {
@@ -437,7 +437,8 @@ public class listaG {
         ArrayList sig = validar(a, "sig", lg);
         return sig;
     }
-    //Retorna la seleccion en un arrayList. Cada posición en el arrayList corresponde a la selección de una producción en concreto
+    //Retorna la seleccion en un arrayList. 
+    //Cada posición en el arrayList corresponde a la selección de una producción en concreto
     public ArrayList getSeleccion() {
         //Asignaciones para rerridos
         nodoLg recoP = raiz;

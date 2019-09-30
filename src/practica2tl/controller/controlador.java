@@ -108,8 +108,7 @@ public class controlador {
         }
         lg.setTamano(cont);
         return lg;
-    }
-    
+    }    
     //Método para definir si una gramática es de la forma especial
     public boolean esEspecial(listaG lg){
         // Nos ubicamos en el primer nodo
